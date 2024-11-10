@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
-    public float speed = 60f;
+    public float speed = 150f;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +15,7 @@ public class CarMovement : MonoBehaviour
     void Update()
     {//move spawn car towards mine
          transform.Translate(Vector3.forward * speed * Time.deltaTime);
-         if (transform.position.z < -22) 
+         if (transform.position.x < -50) 
         {
             Destroy(gameObject);
         }

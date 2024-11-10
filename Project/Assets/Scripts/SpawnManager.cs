@@ -4,35 +4,44 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    //  different car prefabs that can be spawned
     public GameObject[] carPrefabs;
-    private float spawnRangeX = 1.245f; // Half the width of the road (2.49 / 2)
-    private float minSpawnPosZ = 20.0f; // Start of the road
-    private float maxSpawnPosZ = 300.0f; // End of the road
+    // Delay before the first car is spawned
     private float startDelay = 0.25f;
-    private float spawnInterval = 0.25f;
+    // Interval between each car spawn
+    private float spawnInterval = 1.5f;
 
-    // Optional: Define specific Z positions for more controlled spawning
-    private float[] spawnPositionsZ = new float[] { 20.0f, 25.0f, 30.0f, 35.0f, 40.0f, 45.0f, 50.0f }; // Add more as needed
-
+    
     void Start()
     {
+        // Repeatedly invoke the SpawnRandomCar method with the specified start delay and interval
         InvokeRepeating("SpawnRandomCar", startDelay, spawnInterval);
     }
 
+    // Method to spawn a random car at a random position
     void SpawnRandomCar()
     {
-        // Random X position within the road width
-        float spawnPosX = Random.Range(-spawnRangeX, spawnRangeX);
         
-        // Option 1: Random Z position within the defined road limits
-         float spawnPosZ = Random.Range(minSpawnPosZ, maxSpawnPosZ);
+        // These positions represent different lanes on the X-axis where the cars can spawn
+        float[] spawnPositionsX = new float[] { -7.25f, -5.0f, -3.0f, 2.5f, 6.5f, 7.5f, 15.5f, 15.0f, 17.0f, 22.5f, 25.5f, 27.0f };
 
+        // Randomly select one of the X positions from the spawnPositionsX array
+        float spawnPosX = spawnPositionsX[Random.Range(0, spawnPositionsX.Length)];
 
-        // Clamp the Z position to ensure it stays within the road bounds
-        spawnPosZ = Mathf.Clamp(spawnPosZ, minSpawnPosZ, maxSpawnPosZ);
+        
+        // This random range determines how far along the Z-axis the car will spawn
+        float spawnPosZ = Random.Range(10f, 150.0f);
 
+        // Create the final spawn position using the selected X and Z positions 
         Vector3 spawnPos = new Vector3(spawnPosX, 0, spawnPosZ);
+
+        // Randomly choose one of the car prefabs from the carPrefabs array
         int carIndex = Random.Range(0, carPrefabs.Length);
-        Instantiate(carPrefabs[carIndex], spawnPos, carPrefabs[carIndex].transform.rotation);
+
+        // Instantiate the randomly chosen car prefab at the calculated spawn position
+        GameObject spawnedCar = Instantiate(carPrefabs[carIndex], spawnPos, carPrefabs[carIndex].transform.rotation);
+
+        //Assign the "Car" tag to the spawned car to help with collision detection 
+        spawnedCar.tag = "Car";
     }
 }

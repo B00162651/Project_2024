@@ -4,34 +4,44 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    //private variables
-    private float turnSpeed = 45.0f;
-    private float speed = 25.0f;
+    // Speed at which the player moves
+    private float speed = 30.0f;
+    // player's input for horizontal movement (left/right)
     private float horizontalInput;
-    private float forwardInput;
-    private float xRange = 7f;
+    // Limits player's movement on the X-axis
+    private float xRangeLeft = -8.0f;
+    private float xRangeRight = 28.0f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if(transform.position.x <-xRange){
-            transform.position = new Vector3(-xRange, transform.position.y,transform.position.z);
-        }
-        if(transform.position.x >25){
-            transform.position = new Vector3(25, transform.position.y,transform.position.z);
-        }
-        // player Input
-        horizontalInput = Input.GetAxis("Horizontal");
-        forwardInput = Input.GetAxis("Vertical");
-        //forward
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
-        transform.Rotate(Vector3.up  * turnSpeed * horizontalInput * Time.deltaTime);
         
+        // Prevents the player from moving beyond the defined X-axis limits
+        if (transform.position.x < xRangeLeft)
+        {
+            transform.position = new Vector3(xRangeLeft, transform.position.y, transform.position.z);
+        }
+        if (transform.position.x > xRangeRight)
+        {
+            transform.position = new Vector3(xRangeRight, transform.position.y, transform.position.z);
+        }
+
+        // Get horizontal input from the player 
+        horizontalInput = Input.GetAxis("Horizontal");
+
+        // Move the player left and right based on horizontal input
+        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
+    }
+
+    // Called when the player collides with another object
+    void OnCollisionEnter(Collision collision)
+    {
+        // 
+        // This checks if the player collided with an object tagged as "Car"
+        if (collision.gameObject.CompareTag("Car"))
+        {
+            Debug.Log("Game Over"); 
+            //pauses game  
+            Time.timeScale = 0;     
+        }
     }
 }
