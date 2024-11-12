@@ -10,8 +10,12 @@ public class DestroyOutOfBounds : MonoBehaviour
     // The Z position below which the object will be destroyed    
     private float lowerBound = -5;   
 
+    // call script// beta 
+    private SpawnManager spawnManager;
+
     void Start()
     {
+        
     }
 
     void Update()
@@ -21,11 +25,14 @@ public class DestroyOutOfBounds : MonoBehaviour
         if (transform.position.z > topBound)
         {
             Destroy(gameObject);
+            
         }
         // If the object moves past the lower boundary, it will also be destroyed
         else if (transform.position.z < lowerBound)
         {
             Destroy(gameObject);
+            
+
         }
     }
 }

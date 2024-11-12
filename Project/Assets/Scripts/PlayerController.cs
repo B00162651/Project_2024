@@ -11,6 +11,13 @@ public class PlayerController : MonoBehaviour
     // Limits player's movement on the X-axis
     private float xRangeLeft = -8.0f;
     private float xRangeRight = 28.0f;
+    private SpawnManager spawnManager;
+    private AudioSource crashSound;
+    public AudioClip  playerCrash;
+
+    void Start(){
+        crashSound = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -35,11 +42,14 @@ public class PlayerController : MonoBehaviour
     // Called when the player collides with another object
     void OnCollisionEnter(Collision collision)
     {
-        // 
+        
         // This checks if the player collided with an object tagged as "Car"
         if (collision.gameObject.CompareTag("Car"))
         {
-            Debug.Log("Game Over"); 
+            Debug.Log("Game Over!");
+            crashSound.PlayOneShot(playerCrash, 1.0f);
+            
+            
             //pauses game  
             Time.timeScale = 0;     
         }

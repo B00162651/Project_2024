@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -10,12 +11,21 @@ public class SpawnManager : MonoBehaviour
     private float startDelay = 0.25f;
     // Interval between each car spawn
     private float spawnInterval = 1.5f;
+    //score
+    public TextMeshProUGUI scoreText;
+    private int score;
+    //game over 
+    public TextMeshProUGUI gameOver;
 
     
     void Start()
     {
         // Repeatedly invoke the SpawnRandomCar method with the specified start delay and interval
         InvokeRepeating("SpawnRandomCar", startDelay, spawnInterval);
+        // to start score at 0 
+        score = 0;
+        UpdateScore(0);
+       
     }
 
     // Method to spawn a random car at a random position
@@ -43,5 +53,20 @@ public class SpawnManager : MonoBehaviour
 
         //Assign the "Car" tag to the spawned car to help with collision detection 
         spawnedCar.tag = "Car";
+        UpdateScore(5);
+        
     }
+
+    public void UpdateScore(int scoreToAdd){
+        score += scoreToAdd;
+        scoreText.text = "Score: " + score;
+
+
+    }
+public void GameOver()
+{
+    //game over
+    Debug.Log("GameOver method.");
+    gameOver.gameObject.SetActive(true);
+}
 }
